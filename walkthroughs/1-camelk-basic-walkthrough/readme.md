@@ -1,12 +1,14 @@
+# camelk basic
+
 Project: https://camel.apache.org/camel-k/latest/index.html
 
 Status: In development
 
-Requirements:
+## Requirements
 
     Currently requires cluster-admin access to install operator
 
-Notes:
+## Notes
 
 Covers bean creation, processor and easiest EIP
 

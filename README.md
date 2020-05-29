@@ -2,7 +2,7 @@
 
 This project collects all IPT-related Apache Camel K solution patterns.
 
-# Apache Camel K Basic Solution Pattern
+## Apache Camel K Basic Solution Pattern
 
 Covers bean creation, processor and easiest EIP
 
@@ -12,7 +12,7 @@ Covers bean creation, processor and easiest EIP
 * A simple dynamic routing 
 * Log
 
-# Apache Camel K Eventing Solution Pattern
+## Apache Camel K Eventing Solution Pattern
 
 Covers collecting and responding to business events
 

@@ -6,7 +6,7 @@ Status: In development
 
 ## Requirements
 
-    Currently requires cluster-admin access to install operator
+* Currently requires cluster-admin access to install operator
 
 ## Notes
 

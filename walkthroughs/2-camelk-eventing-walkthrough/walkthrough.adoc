@@ -1,0 +1,60 @@
+// URLs
+:openshift-console-url: {openshift-host}/dashboards
+:fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
+:amq-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_amq/{amq-version}/
+
+//attributes
+:title: 2 - Use an Apache Camel K Integration to stream events
+:standard-fail-text: Verify that you followed all the steps. If you continue to have issues, contact your administrator.
+:bl: pass:[ +]
+
+[id='2-use-camel-k-integration-for-event-streaming']
+= {title}
+
+We live in an era when business events flow around us like water. You can use Apache Camel K integrations to interact with these events in myriad ways.
+
+In this Solution Pattern, you will be helping out the Main Street Diner with a project.
+
+== The Main Street Diner
+
+The Main Street Diner is a small, successful restaurant off main street with inside seating for twenty and a sought-after outdoor patio that can seat eight. The restaurant manager is seeking to add some automated alerts so they know when to offer their outdoor seating, which changes things in subtle but significant ways for servicing, setup, and teardown on a daily basis.
+
+The restaurant manager has asked you to set up a basic alert system that shows up on the POS screen when the day’s host or hostess comes online and signs in.
+
+== The Solution
+
+In this case, you know about the MetaWeather API -- an Open API that provides weather information for a particular `Where on Earth ID` (or `WOEID`). You can use that service to retrieve a JSON result with plenty of information to help us solve this problem.
+
+We will use the restaurant's RHI system already in place, set up eventing using AMQ, and create a new Camel K route that does the call, plucks the necessary data out of the JSON, and adds a streamlined event to be picked up downstream. 
+
+The POS system then has a screen widget that shows the day’s forecast to help in planning for the day. 
+
+[type=walkthroughResource,serviceName=openshift]
+.Red Hat OpenShift
+****
+* link:{openshift-console-url}[Console, window="_blank"]
+* link:https://docs.openshift.com/dedicated/4/welcome/index.html/[OpenShift Documentation, window="_blank"]
+* link:https://blog.openshift.com/[OpenShift Blog, window="_blank"]
+****
+
+[type=walkthroughResource]
+.Microsoft Visual Studio Code
+****
+* link:https://code.visualstudio.com/[VS Code, window="_blank"]
+* link:https://code.visualstudio.com/docs[VS Code Documentation, window="_blank"]
+****
+
+:sectnums:
+
+== Creating a project
+
+== Creating the AMQ Streams cluster
+
+== Create Kafka Topics
+
+== Create the Integration
+
+== Test the Integration
+
+== Deploy the Integration
+

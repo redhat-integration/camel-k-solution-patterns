@@ -1,0 +1,13 @@
+
+{
+    "dependencies": {
+      "repos": [],
+      "managedServices": [
+        {
+          "name": "amq"
+        }
+      ],
+      "serviceInstances": []
+    }
+  }
+  

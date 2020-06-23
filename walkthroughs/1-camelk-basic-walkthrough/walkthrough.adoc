@@ -74,7 +74,6 @@ Follow these steps on your local machine to create and deploy your integration i
 
 The following procedure uses VS Code and Red Hat Code Ready Workspaces to create and deploy your integration:
 
-. Install the link:https://marketplace.visualstudio.com/items?itemName=redhat.vscode-didact[Didact extension by Red Hat].
 . Install the link:https://marketplace.visualstudio.com/items?itemName=redhat.apache-camel-extension-pack[Extension Pack for Apache Camel by Red Hat].
 . Select the *Didact Tutorials* view.
 .. Navigate to *Apache Camel K* -> *Starting a new Camel K Route* Solution Pattern. 

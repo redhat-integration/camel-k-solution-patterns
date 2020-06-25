@@ -21,6 +21,9 @@ The Main Street Diner is a small, successful restaurant off main street with ins
 
 The restaurant manager has asked you to set up a basic alert system that shows up on the POS screen when the day’s host or hostess comes online and signs in.
 
+image::images/milan-de-clercq-_RAnrRJv-7I-unsplash.jpg[restaurant, role="integr8ly-img-responsive"]
+// <span>Photo by <a href="https://unsplash.com/@mdc_photography2000?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Milan De Clercq</a> on <a href="/s/photos/outside-dining?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
 == The Solution
 
 In this case, you know about the MetaWeather API -- an Open API that provides weather information for a particular `Where on Earth ID` (or `WOEID`). You can use that service to retrieve a JSON result with plenty of information to help us solve this problem.
@@ -46,15 +49,150 @@ The POS system then has a screen widget that shows the day’s forecast to help 
 
 :sectnums:
 
-== Creating a project
+[time=5]
+[id='creating-a-project']
+== Creating Projects
+:task-context: creating-projects
 
-== Creating the AMQ Streams cluster
+This demo spans over 3 namespaces in the cluster, one hosting the Streaming services, one hosting the broker, and a main namespace for all the system applications.
 
-== Create Kafka Topics
+We will create three projects to partition resources in various areas: integration, event streaming, and event brokering. Each will follow the same basic isolation pattern to ensure that resources are installed where they are used and don't clutter up the cluster.
 
+The three projects we will create are:
+
+* camel-k-event-streaming
+* event-streaming-kafka-cluster
+* event-streaming-messaging-broker
+
+****
+*Creating new projects in OpenShift*
+****
+
+Follow these steps to create a new eventing project.
+
+. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
+. Create a new project named `camel-k-event-streaming`. 
+.. Go to *Home* -> *Projects*.
+.. Click the *Create Project* button.
+. Monitor the OpenShift Console until a green check mark is displayed next to the new project.
+
+Repeat the process for `event-streaming-kafka-cluster` and `event-streaming-messaging-broker`.
+
+[type=verification]
+Look at the link:openshift-console-url: {openshift-host}/projects[OpenShift, window="_blank"] console. Do you see your newly created projects displayed in the *Projects* list?
+
+[type=verificationFail]
+{standard-fail-text}
+
+// end::task-creating-projects[]
+
+[time=30]
+[id='installing-operators']
+== Installing Operators
+:task-context: installing-operators
+
+With the projects created, we can then install the operators we will need for each namespace.
+
+* camel-k-event-streaming - Red Hat Integration - Camel K Operator
+* event-streaming-kafka-cluster - Red Hat Integration - AMQ Streams Operator
+* event-streaming-messaging-broker - Red Hat Integration - AMQ Broker Operator
+
+****
+*Installing Operators*
+****
+
+Follow these steps to install the Camel K operator (cluster admin rights are necessary).
+
+. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
+. Go to *Operators* -> *OperatorHub*.
+.. Select `camel-k-event-streaming` as the project in the Project dropdown at the top.
+.. Type `camel` in the `Filter by keyword...` box.
+.. Select `Red Hat Integration - Camel K`.
+.. In the pop-up window that appears, click the *Install* button.
+.. On the `Create Operator Subscription` page, select `A specific namespace on the cluster` for *Installation Mode*.
+.. Make sure the `camel-k-event-streaming` namespace is selected as the *Installed Namespace*.
+.. Click the *Subscribe* button.
+.. Go to *Home* -> *Projects*.
+.. Click the *Create Project* button.
+. Monitor the *Installed Operators* page until a green check mark is displayed next to the new operator. It may take a few minutes to install.
+
+Repeat the process to install the *Red Hat Integration - AMQ Streams Operator* on the `event-streaming-kafka-cluster` namespace and *Red Hat Integration - AMQ Broker Operator* on the `event-streaming-messaging-broker` namespace.
+
+[type=verification]
+Look at the link:openshift-console-url: {openshift-host}/k8s/all-namespaces/operators.coreos.com~v1alpha1~ClusterServiceVersion[OpenShift, window="_blank"] console. Do you see your newly installed operators displayed in the *Installed Operators* list on the namespaces you selected?
+
+[type=verificationFail]
+{standard-fail-text}
+
+// end::task-installing-operators[]
+
+[time=5]
+[id='creating-kafka-topics']
+== Create a Kafka Topic
+:task-context: creating-kafka-topic
+
+With the projects created and operators installed, we start setting up our event flow. In the Streaming namespace, we will have a topic listening to events (weather).
+
+****
+*Creating a Kafka Topic*
+****
+
+Follow these steps to create a new Kafka topic.
+
+. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
+. Go to *Operators* -> *Installed Operators*.
+.. Select `event-streaming-kafka-cluster` as the project in the Project dropdown at the top.
+.. Click on `Red Hat Integration - AMQ Streams`. It will take you to the Operator hub where you can create Kafka artifacts.
+.. Find *Kafka Topic* and click the *Create Instance* button.
+.. Change `my` to `weather` in the YAML to change `my-topic` to `weather-topic` and `my-cluster` to `weather-cluster`. 
+.. Click on the *Create* button.
+. Monitor the *KafkaTopics* page until the new topic appears.
+
+[type=verification]
+(Not sure how to verify that this was created successfully since it doesn't change from Status: Unknown, but it does show up in the list)
+. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
+. Go to *Operators* -> *Installed Operators*.
+.. Select `event-streaming-kafka-cluster` as the project in the Project dropdown at the top.
+.. Click on `Red Hat Integration - AMQ Streams`. It will take you to the Operator hub where you can create Kafka artifacts.
+.. Click on the `Kafka Topic` link in the list of Kafka tabs.
+.. Verify that `weather-topic` appears in the list of Kafka Topics.
+
+[type=verificationFail]
+{standard-fail-text}
+
+// end::task-creating-kafka-topic[]
+
+[time=5]
+[id='creating-broker-addresses']
+== Create the Broker Addresses and Queues
+:task-context: creating-broker-addresses
+
+****
+*Creating Broker Addresses and Queues*
+****
+
+[type=verification]
+(Verify that the addresses and queues were created properly)
+
+[type=verificationFail]
+{standard-fail-text}
+
+// end::task-creating-broker-addresses[]
+
+
+[time=30]
+[id='creating-integration']
 == Create the Integration
+:task-context: creating-integration
 
-== Test the Integration
+****
+*Creating a Camel K Integration*
+****
 
-== Deploy the Integration
+[type=verification]
+(Verify that the integration was created and is running)
 
+[type=verificationFail]
+{standard-fail-text}
+
+// end::task-creating-integration[]

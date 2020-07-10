@@ -2,6 +2,7 @@
 :openshift-console-url: {openshift-host}/dashboards
 :openshift-catalog-url: {openshift-host}/catalog
 :openshift-topology-url: {openshift-host}/topology
+:openshift-add-url: {openshift-host}/add
 :fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
 :amq-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_amq/{amq-version}/
 
@@ -15,11 +16,11 @@
 
 Create a simple link:https://camel.apache.org/camel-k/latest/index.html[Apache Camel K, window="_black"] integration to learn about important product features, before you work on more complex examples.
 
-In this Solution Pattern you will create a simple Greeter application that sends the message 'Hello, customer!' every few seconds.
+In this Solution Pattern you will create a simple Hello World application that sends the message 'Hello world!' every few seconds.
 
 // I think these bulleted sections need more info or context. Are they resources the user can use for background? If so maybe we can put a note about that. Also, they ae prereqs for the Solution Pattern, so we should document that as well. 
 
-This Solution Pattern requires the user to have knowledge of Red Hat OpenShift and prior experience using an IDE. 
+This Solution Pattern requires the user to have knowledge of Red Hat OpenShift. 
 
 [type=walkthroughResource,serviceName=openshift]
 .Red Hat OpenShift
@@ -29,12 +30,12 @@ This Solution Pattern requires the user to have knowledge of Red Hat OpenShift a
 * link:https://blog.openshift.com/[OpenShift Blog, window="_blank"]
 ****
 
-[type=walkthroughResource]
-.Microsoft Visual Studio Code
-****
-* link:https://code.visualstudio.com/[VS Code, window="_blank"]
-* link:https://code.visualstudio.com/docs[VS Code Documentation, window="_blank"]
-****
+//[type=walkthroughResource]
+//.Microsoft Visual Studio Code
+//****
+//* link:https://code.visualstudio.com/[VS Code, window="_blank"]
+//* link:https://code.visualstudio.com/docs[VS Code Documentation, window="_blank"]
+//****
 
 :sectnums:
 
@@ -53,14 +54,24 @@ NOTE: Your cluster administrator must add the Camel K Operator to your cluster b
 
 Follow these steps to create a new project.
 
+As an Administrator:
+
 . Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
 . Create a new project named `camel-basic`. 
 .. Go to *Home* -> *Projects*.
 .. Click the *Create Project* button.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
+As a Developer:
+
+. Go to the link:{openshift-add-url}[Add, window="_blank"].
+. In the *Project:* dropdown at the top, select `Create Project`.
+.. Specify the name `camel-basic`.
+.. Click the *Create* button.
+. Monitor the OpenShift Console until a green check mark is displayed next to the new project.
+
 [type=verification]
-Look at the link:openshift-console-url: {openshift-host}/projects[OpenShift, window="_blank"] console. Do you see your newly created project displayed in the *Projects* list?
+Look at the link:openshift-add-url: {openshift-add-url}[Add, window="_blank"] console. Do you see your newly created project displayed in the *Project:* dropdown list?
 
 [type=verificationFail]
 {standard-fail-text}

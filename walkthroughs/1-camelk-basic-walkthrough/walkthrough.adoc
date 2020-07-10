@@ -16,11 +16,9 @@
 
 Create a simple link:https://camel.apache.org/camel-k/latest/index.html[Apache Camel K, window="_black"] integration to learn about important product features, before you work on more complex examples.
 
-In this Solution Pattern you will create a simple Hello World application that sends the message 'Hello world!' every few seconds.
+In this Solution Pattern you will create a simple Hello World application that sends the message 'Hello world from Camel K!' every few seconds.
 
-// I think these bulleted sections need more info or context. Are they resources the user can use for background? If so maybe we can put a note about that. Also, they ae prereqs for the Solution Pattern, so we should document that as well. 
-
-This Solution Pattern requires the user to have knowledge of Red Hat OpenShift. 
+// Resources included in the right-side of the Pattern -- format specified by SolX
 
 [type=walkthroughResource,serviceName=openshift]
 .Red Hat OpenShift
@@ -30,19 +28,12 @@ This Solution Pattern requires the user to have knowledge of Red Hat OpenShift.
 * link:https://blog.openshift.com/[OpenShift Blog, window="_blank"]
 ****
 
-//[type=walkthroughResource]
-//.Microsoft Visual Studio Code
-//****
-//* link:https://code.visualstudio.com/[VS Code, window="_blank"]
-//* link:https://code.visualstudio.com/docs[VS Code Documentation, window="_blank"]
-//****
-
 :sectnums:
 
 [time=5]
 [id='creating-a-project']
 == Creating a project
-:task-context: creating-projects
+:task-context: creating-project
 
 NOTE: Your cluster administrator must add the Camel K Operator to your cluster before you can perform this Solution Pattern. 
 
@@ -62,6 +53,7 @@ As an Administrator:
 .. Click the *Create Project* button.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
+{bl}
 As a Developer:
 
 . Go to the link:{openshift-add-url}[Add, window="_blank"].
@@ -76,16 +68,18 @@ Look at the link:openshift-add-url: {openshift-add-url}[Add, window="_blank"] co
 [type=verificationFail]
 {standard-fail-text}
 
+// end::task-creating-project[]
+
 [time=5]
 [id='creating-an-integration']
 == Creating an integration 
-:task-context: creating-integrations
+:task-context: creating-integration
 
 ****
 *Creating a new integration in OpenShift*
 ****
 
-Follow these steps to create a new project.
+Follow these steps to create a new integration.
 
 . Go to the link:{openshift-catalog-url}[OpenShift Developer Catalog, window="_blank"].
 . Create a new integration named `HelloWorld`. 
@@ -94,6 +88,7 @@ Follow these steps to create a new project.
 .. Change the *name* in the YAML to `HelloWorld`.
 .. Click the *Create* button.
 
+{bl}
 It may take a few moments for the integration to build and deploy, but you can watch the Topology graph to see when it comes online.
 
 . Go to the link:{openshift-topology-url}[Application Topology, window="_blank"].
@@ -106,61 +101,4 @@ Look at the link:openshift-topology-url: {openshift-host}/topology[Application T
 [type=verificationFail]
 {standard-fail-text}
 
-// end::task-creating-projects[]
-
-// [time=15]
-// [id='creating-a-project-in-vscode']
-// == Creating your project in VS Code or your preferred IDE
-// :task-context: vs-code
-// 
-// Follow these steps on your local machine to create and deploy your integration in your preferred IDE.
-// 
-// The following procedure uses VS Code and Red Hat Code Ready Workspaces to create and deploy your integration:
-// 
-// . Install the link:https://marketplace.visualstudio.com/items?itemName=redhat.apache-camel-extension-pack[Extension Pack for Apache Camel by Red Hat].
-// . Select the *Didact Tutorials* view.
-// .. Navigate to *Apache Camel K* -> *Starting a new Camel K Route* Solution Pattern. 
-// .. Swipe right to view the menu items
-// .. Click the *Start Didact Tutorial* button.
-// . Follow the steps in the `Starting a new Camel K Route` tutorial.
-// 
-// {bl}
-// Or, use your preferred development environment with access to Camel K to create and deploy your integration.
-// 
-// . Open a new terminal window.
-// . Type `kamel version` to ensure you have access to the `kamel` command-line (CLI) tool and that it is connected to your running OpenShift instance by typing. For more information on the Camel K CLI tool,see the link:https://camel.apache.org/camel-k/latest/installation/installation.html[Apache Camel K Installation documentation.
-// . Type `kamel init Greeter.java` to create a new Java route that puts a message in the log once per second.
-// . Type `kamel run Greeter.java` to start the integration.
-// . Type `kamel get` to get a list of the integrations currently running or starting up.
-// . Type `kamel log Greeter` when the integration is in the _Running_ status, to view the log for the integration.
-// 
-// {bl}
-// Return to Solution Explorer when you are done.
-// 
-// [type=verification]
-// Look at the link:openshift-console-url: {openshift-host}/dashboards[OpenShift, window="_blank"] console. Navigate to the *Operators* -> *Installed Operators* list for the `camel-basic` project. Do you see your new integration in the *Integration* list?
-// 
-// [type=verificationFail]
-// {standard-fail-text}
-// 
-// end::task-vscode[]
-
-// [time=5]
-// [id='check-openshift-for-integration']
-// == Find your running Camel K integration
-// :task-context: run-camel
-// 
-// Follow these steps to verify that your integration is running in the OpenShift console.
-// 
-// . Open the OpenShift link:{openshift-host}/console[Console, window="_blank"]
-// . Navigate to the *Workloads* -> *Pods* list
-// . Search for a pod that starts with `greeter-` and click on it.
-// . Click on the *Logs* tab and view the running log for your route. You should see similar output to what you saw in your IDE or terminal window.
-// 
-// [type=verification]
-// Look at the link:openshift-console-url: {openshift-host}/dashboards[OpenShift, window="_blank"] console. Navigate to the *Workloads* -> *Pods* list for the `greeter-` pod and look at the log. Do you see the same messages you saw in your IDE?
-// 
-// [type=verificationFail]
-// {standard-fail-text}
-// 
-// end::run-camel[]
+// end::task-creating-integration[]

@@ -1,6 +1,6 @@
 // URLs
 :openshift-console-url: {openshift-host}/dashboards
-:openshift-catalog-url: {openshift-host}/catalog/ns
+:openshift-catalog-url: {openshift-host}/catalog
 :openshift-topology-url: {openshift-host}/topology
 :fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
 :amq-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_amq/{amq-version}/

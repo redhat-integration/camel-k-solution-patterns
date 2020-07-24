@@ -141,12 +141,13 @@ With the projects created and operators installed, we start setting up our event
 Follow these steps to create a new Kafka topic.
 
 . Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-. Go to *Operators* -> *Installed Operators*.
-.. Select `event-streaming-kafka-cluster` as the project in the Project dropdown at the top.
-.. Click on `Red Hat Integration - AMQ Streams`. It will take you to the Operator hub where you can create Kafka artifacts.
-.. Find *Kafka Topic* and click the *Create Instance* button.
+
+. In the left navigation menu, click *Operators* > *Installed Operators*.
+.. Select `event-streaming-kafka-cluster` as the project in the Project dropdown.
+.. Click on *Red Hat Integration - AMQ Streams*. This will take you to the Operator hub where you can create Kafka artifacts.
+.. Find *Kafka Topic* and click *Create Instance*.
 .. Change `my` to `weather` in the YAML to change `my-topic` to `weather-topic` and `my-cluster` to `weather-cluster`. 
-.. Click on the *Create* button.
+.. Click *Create*.
 . Monitor the *KafkaTopics* page until the new topic appears.
 
 [type=verification]

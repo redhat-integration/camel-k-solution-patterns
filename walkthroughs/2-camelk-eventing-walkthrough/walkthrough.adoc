@@ -71,8 +71,8 @@ Follow these steps to create a new eventing project:
 . In the link:{openshift-console-url}[OpenShift Console, window="_blank"], log in using an account with cluster administrator privileges.
 . Create a new OpenShift project:
 
-.. In the left navigation menu, click Home > Project > Create Project.
-.. Enter a project named `camel-k-event-streaming` and click Create.
+.. In the left navigation menu, click *Home > Project > Create Project*.
+.. Enter a project named `camel-k-event-streaming` and click *Create*.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
 Repeat this process for `event-streaming-kafka-cluster` and `event-streaming-messaging-broker`.
@@ -90,11 +90,11 @@ Look at the link:openshift-console-url: {openshift-host}/projects[OpenShift, win
 == Installing Operators
 :task-context: installing-operators
 
-With the projects created, we can then install the operators we will need for each namespace.
+With the projects created, we can now install each of the following operators which we will need for each namespace:
 
-* camel-k-event-streaming - Red Hat Integration - Camel K Operator
-* event-streaming-kafka-cluster - Red Hat Integration - AMQ Streams Operator
-* event-streaming-messaging-broker - Red Hat Integration - AMQ Broker Operator
+* camel-k-event-streaming (Red Hat Integration - Camel K Operator)
+* event-streaming-kafka-cluster (Red Hat Integration - AMQ Streams Operator)
+* event-streaming-messaging-broker (Red Hat Integration - AMQ Broker Operator)
 
 ****
 *Installing Operators*
@@ -103,17 +103,19 @@ With the projects created, we can then install the operators we will need for ea
 Follow these steps to install the Camel K operator (cluster admin rights are necessary).
 
 . Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-. Go to *Operators* -> *OperatorHub*.
-.. Select `camel-k-event-streaming` as the project in the Project dropdown at the top.
-.. Type `camel` in the `Filter by keyword...` box.
-.. Select `Red Hat Integration - Camel K`.
-.. In the pop-up window that appears, click the *Install* button.
-.. On the `Create Operator Subscription` page, select `A specific namespace on the cluster` for *Installation Mode*.
-.. Make sure the `camel-k-event-streaming` namespace is selected as the *Installed Namespace*.
-.. Click the *Subscribe* button.
-.. Go to *Home* -> *Projects*.
-.. Click the *Create Project* button.
-. Monitor the *Installed Operators* page until a green check mark is displayed next to the new operator. It may take a few minutes to install.
+
+. In the left navigation menu, click *Catalog* > *OperatorHub*.
+. Select `camel-k-event-streaming` as the project in the Project dropdown.
+. In the *Filter by keyword* text box, enter `Camel K` to find the *Red Hat Integration - Camel K Operator*.
+
+. Read the information about the Operator, and click *Install*. This displays the *Create Operator Subscription* page.
+
+. Select the following subscription setting:
+** *Installation Mode* > *A specific namespace on the cluster* > *my-camel-k-project*
+
+. Click *Subscribe*. This displays the *Operators* > *Installed Operators* page.
+
+. Wait a few moments until the *Status* for the Camel K Operator displays *Succeeded* and the subscription is *Up to Date*. A green check mark will also be displayed next to the new operator.
 
 Repeat the process to install the *Red Hat Integration - AMQ Streams Operator* on the `event-streaming-kafka-cluster` namespace and *Red Hat Integration - AMQ Broker Operator* on the `event-streaming-messaging-broker` namespace.
 

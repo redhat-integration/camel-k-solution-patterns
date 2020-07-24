@@ -25,12 +25,11 @@ image::images/milan-de-clercq-_RAnrRJv-7I-unsplash.jpg[restaurant, role="integr8
 // <span>Photo by <a href="https://unsplash.com/@mdc_photography2000?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Milan De Clercq</a> on <a href="/s/photos/outside-dining?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
 
 == The Solution
+In this solution pattern, we will use the MetaWeather API service which is an Open API that provides weather information based on a particular `Where on Earth ID` (`WOEID`). We can use this service to retrieve JSON-formatted data which will be used in the solution pattern. 
 
-In this case, you know about the MetaWeather API -- an Open API that provides weather information for a particular `Where on Earth ID` (or `WOEID`). You can use that service to retrieve a JSON result with plenty of information to help us solve this problem.
+We will use the restaurant's Red Hat Integration (RHI) system which is already in place, create an event using Red Hat AMQ, and create a new Camel K route that performs the call to the MetaWeather API, processes the necessary JSON data, and adds a streamlined event to be used downstream. 
 
-We will use the restaurant's RHI system already in place, set up eventing using AMQ, and create a new Camel K route that does the call, plucks the necessary data out of the JSON, and adds a streamlined event to be picked up downstream. 
-
-The POS system then has a screen widget that shows the day’s forecast to help in planning for the day. 
+The diner's POS system contains a widget which displays the day’s forecast which will help the diner staff to plan for the day. 
 
 [type=walkthroughResource,serviceName=openshift]
 .Red Hat OpenShift
@@ -54,9 +53,9 @@ The POS system then has a screen widget that shows the day’s forecast to help 
 == Creating Projects
 :task-context: creating-projects
 
-This demo spans over 3 namespaces in the cluster, one hosting the Streaming services, one hosting the broker, and a main namespace for all the system applications.
+This demonstration spans three namespaces in the cluster, one hosting the Streaming services, one hosting the broker, and a main namespace for all the system applications.
 
-We will create three projects to partition resources in various areas: integration, event streaming, and event brokering. Each will follow the same basic isolation pattern to ensure that resources are installed where they are used and don't clutter up the cluster.
+We will create separate projects to partition integration, event streaming and event brokering resources. Each project will follow the same basic isolation pattern to ensure that the resources are installed where they are used and do not clutter up the cluster.
 
 The three projects we will create are:
 
@@ -67,16 +66,16 @@ The three projects we will create are:
 ****
 *Creating new projects in OpenShift*
 ****
+Follow these steps to create a new eventing project:
 
-Follow these steps to create a new eventing project.
+. In the link:{openshift-console-url}[OpenShift Console, window="_blank"], log in using an account with cluster administrator privileges.
+. Create a new OpenShift project:
 
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-. Create a new project named `camel-k-event-streaming`. 
-.. Go to *Home* -> *Projects*.
-.. Click the *Create Project* button.
+.. In the left navigation menu, click Home > Project > Create Project.
+.. Enter a project named `camel-k-event-streaming` and click Create.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
-Repeat the process for `event-streaming-kafka-cluster` and `event-streaming-messaging-broker`.
+Repeat this process for `event-streaming-kafka-cluster` and `event-streaming-messaging-broker`.
 
 [type=verification]
 Look at the link:openshift-console-url: {openshift-host}/projects[OpenShift, window="_blank"] console. Do you see your newly created projects displayed in the *Projects* list?

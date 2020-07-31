@@ -3,6 +3,7 @@
 :openshift-catalog-url: {openshift-host}/catalog
 :openshift-topology-url: {openshift-host}/topology
 :openshift-projects-url: {openshift-host}/k8s/cluster/projects
+:openshift-installed-operators-url: {openshift-host}/k8s/ns/fruit-stand/operators.coreos.com~v1alpha1~ClusterServiceVersion
 :openshift-add-url: {openshift-host}/add:fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
 :amq-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_amq/{amq-version}/
 
@@ -102,14 +103,15 @@ This demonstration requires a single project with event streaming and camel k re
 ****
 Follow these steps to create a new eventing project:
 
-. In the link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"], log in using an account with cluster administrator privileges.
+. In the link:{openshift-console-url}[OpenShift Console, window="_blank"], log in using an account with cluster administrator privileges.
 . Create a new OpenShift project:
+.. Click on *Projects* (link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"])
 .. Click *Create Project*.
 .. Enter a project named `fruit-stand` and click *Create*.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
 [type=verification]
-Go to the link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] console. Do you see your newly created project displayed in the *Projects* list?
+Go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] in the console. Do you see your newly created project displayed in the *Projects* list?
 
 [type=verificationFail]
 {standard-fail-text}
@@ -133,7 +135,7 @@ With the projects created, we can now install each of the following operators wh
 {bl}
 Follow these steps to install the Camel K operator (cluster admin rights are necessary).
 
-. Go to the OperatorHub in the link:{openshift-host}/operatorHub[OpenShift Console, window="_blank"].
+. Go to *Operators->OperatorHub* in the link:{openshift-host}/operatorHub[OpenShift Console, window="_blank"].
 . Make sure `fruit-stand` is selected as the project in the Project dropdown.
 . In the *Filter by keyword* text box, enter `Camel K` to find the *Red Hat Integration - Camel K Operator*.
 . Read the information about the Operator, and click *Install*. This displays the *Create Operator Subscription* page.
@@ -146,7 +148,7 @@ Follow these steps to install the Camel K operator (cluster admin rights are nec
 Repeat the process to install the *Red Hat Integration - AMQ Streams Operator* into the `fruit-stand` namespace.
 
 [type=verification]
-Go to the link:{openshift-host}/k8s/all-namespaces/operators.coreos.com~v1alpha1~ClusterServiceVersion[OpenShift Console, window="_blank"]. Do you see your newly installed operators displayed in the *Installed Operators* list on the namespaces you selected?
+Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"]. Do you see your newly installed operators displayed in the *Installed Operators* list on the namespaces you selected?
 
 [type=verificationFail]
 {standard-fail-text}
@@ -166,20 +168,17 @@ With the projects created and operators installed, we start setting up our event
 
 Follow these steps to create a new Kafka instance.
 
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-
-. In the left navigation menu, click *Operators* > *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown.
-.. Click on *Red Hat Integration - AMQ Streams*. This will take you to the Operator hub where you can create Kafka artifacts.
+. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+.. Click on *Red Hat Integration - AMQ Streams*. This will take you to the Operator page where you can create Kafka artifacts.
 .. In the *Provided APIs* on the *Details* page, locate *Kafka* and click *Create Instance*, or click on the `Kafka` link in the list of Kafka tabs and then click *Create Kafka*.
 .. Click *Edit Form* to peruse the options, but leave all settings to their defaults.
 .. Click *Create*.
 . Monitor the *Kafkas* page until the new Kafka instance appears.
 
 [type=verification]
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-. Go to *Operators* -> *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown at the top.
+. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
 .. Click on `Red Hat Integration - AMQ Streams`. It will take you to the Operator hub where you can create Kafka artifacts.
 .. Click on the `Kafka` link in the list of Kafka tabs.
 .. Verify that `my-cluster` appears in the list of Kafka instances.
@@ -202,11 +201,9 @@ With the projects created and operators installed, we start setting up our event
 
 Follow these steps to create a new Kafka topic.
 
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-
-. In the left navigation menu, click *Operators* > *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown.
-.. Click on *Red Hat Integration - AMQ Streams*. This will take you to the Operator hub where you can create Kafka artifacts.
+. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+.. Click on *Red Hat Integration - AMQ Streams*. This will take you to the Operator page where you can create Kafka artifacts.
 .. Find *Kafka Topic* and click *Create Instance*.
 .. Click *Edit Form* to peruse the options in a user-friendly format.
 .. Change the Name from `my-topic` to `fruits`. 
@@ -214,10 +211,9 @@ Follow these steps to create a new Kafka topic.
 . Monitor the *KafkaTopics* page until the new topic appears.
 
 [type=verification]
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-. Go to *Operators* -> *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown at the top.
-.. Click on `Red Hat Integration - AMQ Streams`. It will take you to the Operator hub where you can create Kafka artifacts.
+. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+.. Click on `Red Hat Integration - AMQ Streams`.
 .. Click on the `Kafka Topic` link in the list of Kafka tabs.
 .. Verify that `fruits` appears in the list of Kafka Topics.
 
@@ -237,13 +233,11 @@ Follow these steps to create a new Kafka topic.
 
 Follow these steps to create a new Camel K integration.
 
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-
-. In the left navigation menu, click *Operators* > *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown.
-.. Click on *Red Hat Integration - Camel K*. This will take you to the Operator hub where you can create Camel K artifacts.
+. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+.. Click on *Red Hat Integration - Camel K*. This will take you to the Operator page where you can create Camel K artifacts.
 .. Find *Integration* and click *Create Instance*.
-.. Replace the YAML with this text:
+.. Replace the YAML with this text (expand, select, copy and paste):
 +
 ----
 apiVersion: camel.apache.org/v1
@@ -304,10 +298,9 @@ spec:
 . Monitor the *Integrations* page until the new integration appears.
 
 [type=verification]
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-. Go to *Operators* -> *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown at the top.
-.. Click on *Red Hat Integration - Camel K*. This will take you to the Operator hub where you can create Camel K artifacts.
+. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+.. Click on *Red Hat Integration - Camel K*.
 .. Click on the `Integration` link in the list of Camel K tabs.
 .. Verify that `fruits-producer` appears in the list of Integrations.
 .. Verify that `fruits-producer` is in the state `Phase: Running`. 
@@ -333,13 +326,11 @@ Now that our first integration is out there listening for events, let's give it 
 
 Follow these steps to create a second Camel K integration.
 
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-
-. In the left navigation menu, click *Operators* > *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown.
+. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
 .. Click on *Red Hat Integration - Camel K*. This will take you to the Operator hub where you can create Camel K artifacts.
 .. Find *Integration* and click *Create Instance*.
-.. Replace the YAML with this text:
+.. Replace the YAML with this text (expand, select, copy and paste):
 +
 ----
 apiVersion: camel.apache.org/v1

@@ -2,6 +2,7 @@
 :openshift-console-url: {openshift-host}/dashboards
 :openshift-catalog-url: {openshift-host}/catalog
 :openshift-topology-url: {openshift-host}/topology
+:openshift-projects-url: {openshift-host}/k8s/cluster/projects
 :openshift-add-url: {openshift-host}/add:fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
 :amq-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_amq/{amq-version}/
 
@@ -101,14 +102,14 @@ This demonstration requires a single project with event streaming and camel k re
 ****
 Follow these steps to create a new eventing project:
 
-. In the link:{openshift-host}/projects[OpenShift Console, window="_blank"], log in using an account with cluster administrator privileges.
+. In the link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"], log in using an account with cluster administrator privileges.
 . Create a new OpenShift project:
 .. Click *Create Project*.
 .. Enter a project named `fruit-stand` and click *Create*.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
 [type=verification]
-Go to the link:{openshift-host}/projects[OpenShift, window="_blank"] console. Do you see your newly created project displayed in the *Projects* list?
+Go to the link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] console. Do you see your newly created project displayed in the *Projects* list?
 
 [type=verificationFail]
 {standard-fail-text}

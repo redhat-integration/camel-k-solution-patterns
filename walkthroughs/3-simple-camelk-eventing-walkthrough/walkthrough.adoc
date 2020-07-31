@@ -1,12 +1,15 @@
 // URLs
 :openshift-console-url: {openshift-host}/dashboards
-:fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
+:openshift-catalog-url: {openshift-host}/catalog
+:openshift-topology-url: {openshift-host}/topology
+:openshift-add-url: {openshift-host}/add:fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
 :amq-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_amq/{amq-version}/
 
 //attributes
 :title: 3 - A Simple Fruit Stand
 :standard-fail-text: Verify that you followed all the steps. If you continue to have issues, contact your administrator.
 :bl: pass:[ +]
+:imagesdir: images
 
 [id='3-camel-k-kafka-fruit-stand']
 = {title}
@@ -26,6 +29,12 @@ In this Solution Pattern, you will be helping with a virtual fruit stand and cre
 ****
 
 [type=walkthroughResource]
+.Red Hat AMQ Streams
+****
+* link:https://access.redhat.com/documentation/en-us/red_hat_amq/7.7/html/amq_streams_on_openshift_overview/[AMQ Streams on OpenShift Documentation, window="_blank"]
+****
+
+[type=walkthroughResource]
 .Apache Camel K
 ****
 * link:https://camel.apache.org/camel-k/latest/index.html[Apache Camel K Documentation, window="_blank"]
@@ -39,17 +48,43 @@ In this Solution Pattern, you will be helping with a virtual fruit stand and cre
 
 == The Fruit Vendor
 
+image::images/photo-of-assorted-fruits-selling-on-fruit-stand-4117143.jpg[fruitstand, float="right", title="Photo by Kristina Gain from Pexels"]
+// Photo by Kristina Gain from Pexels
+
 The Fruit Vendor offers a stall in the market and a veritable wonderland of options for shoppers in need of produce. 
 
-The manager of the site has asked you to start to pull together information on their produce to help inform the buyer of nutritional details.
+The manager of the site has asked you to start to pull together information on their produce to help inform the buyer of nutritional details. Details such as:
 
-image::images/photo-of-assorted-fruits-selling-on-fruit-stand-4117143.jpg[fruitstand, role="integr8ly-img-responsive"]
-// Photo by Kristina Gain from Pexels
+* Calories
+* Carbohydrates
+* Fats
+* Protein
+* Sugar
 
 === The Solution
 
 In this solution pattern, we will use the Fruityvice API service which is an Open API that provides nutritional data for all kinds of fruit. We can use this service to retrieve JSON-formatted data which will be used in the solution pattern. 
 
+Fruityvice enables you to use a GET call and retrieve JSON around common fruits. For example, a GET about data for `Banana` returns:
+
+....
+{
+    "genus": "Musa",
+    "name": "Banana",
+    "id": 1,
+    "family": "Musaceae",
+    "order": "Zingiberales",
+    "nutritions": {
+        "carbohydrates": 22,
+        "protein": 1,
+        "fat": 0.2,
+        "calories": 96,
+        "sugar": 17.2
+    }
+}
+....
+
+{bl}
 We will use the fruit stand's Red Hat Integration (RHI) system which is already in place, create an event using Red Hat AMQ, and create a new Camel K route that performs the call to the Fruityvice API, processes the necessary JSON data, and adds a streamlined event to be used downstream. 
 
 :sectnums:
@@ -66,22 +101,21 @@ This demonstration requires a single project with event streaming and camel k re
 ****
 Follow these steps to create a new eventing project:
 
-. In the link:{openshift-console-url}[OpenShift Console, window="_blank"], log in using an account with cluster administrator privileges.
+. In the link:{openshift-host}/projects[OpenShift Console, window="_blank"], log in using an account with cluster administrator privileges.
 . Create a new OpenShift project:
-
-.. In the left navigation menu, click *Home > Project > Create Project*.
+.. Click *Create Project*.
 .. Enter a project named `fruit-stand` and click *Create*.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
 [type=verification]
-Look at the link:openshift-console-url: {openshift-host}/projects[OpenShift, window="_blank"] console. Do you see your newly created project displayed in the *Projects* list?
+Go to the link:{openshift-host}/projects[OpenShift, window="_blank"] console. Do you see your newly created project displayed in the *Projects* list?
 
 [type=verificationFail]
 {standard-fail-text}
 
 // end::task-creating-a-project[]
 
-[time=30]
+[time=10]
 [id='installing-operators']
 == Installing Operators
 :task-context: installing-operators
@@ -91,31 +125,27 @@ With the projects created, we can now install each of the following operators wh
 * Red Hat Integration - Camel K Operator
 * Red Hat Integration - AMQ Streams Operator
 
-****
-*Installing Operators*
-****
+// These links should work, but it opens into an error state - do we have a better link to point to for these operators?
+//* link:{https://catalog.redhat.com/software/operators/detail/5ef256e84a5747832973cc6b}[Red Hat Integration - Camel K Operator, window="_blank"]
+//* link:{https://catalog.redhat.com/software/operators/detail/5ef20efd46bc301a95a1e9a4}[Red Hat Integration - AMQ Streams Operator, window="_blank"]
 
+{bl}
 Follow these steps to install the Camel K operator (cluster admin rights are necessary).
 
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-
-. In the left navigation menu, click *Catalog* > *OperatorHub*.
-. Select `fruit-stand` as the project in the Project dropdown.
+. Go to the OperatorHub in the link:{openshift-host}/operatorHub[OpenShift Console, window="_blank"].
+. Make sure `fruit-stand` is selected as the project in the Project dropdown.
 . In the *Filter by keyword* text box, enter `Camel K` to find the *Red Hat Integration - Camel K Operator*.
-
 . Read the information about the Operator, and click *Install*. This displays the *Create Operator Subscription* page.
-
 . Select the following subscription setting:
-** *Installation Mode* > *A specific namespace on the cluster* > *fruit-stand*
-
+** *Installation Mode>A specific namespace on the cluster>fruit-stand*
 . Click *Subscribe*. This displays the *Operators* > *Installed Operators* page.
-
 . Wait a few moments until the *Status* for the Camel K Operator displays *Succeeded* and the subscription is *Up to Date*. A green check mark will also be displayed next to the new operator.
 
-Repeat the process to install the *Red Hat Integration - AMQ Streams Operator* in the `fruit-stand` namespace.
+{bl}
+Repeat the process to install the *Red Hat Integration - AMQ Streams Operator* into the `fruit-stand` namespace.
 
 [type=verification]
-Look at the link:openshift-console-url: {openshift-host}/k8s/all-namespaces/operators.coreos.com~v1alpha1~ClusterServiceVersion[OpenShift, window="_blank"] console. Do you see your newly installed operators displayed in the *Installed Operators* list on the namespaces you selected?
+Go to the link:{openshift-host}/k8s/all-namespaces/operators.coreos.com~v1alpha1~ClusterServiceVersion[OpenShift Console, window="_blank"]. Do you see your newly installed operators displayed in the *Installed Operators* list on the namespaces you selected?
 
 [type=verificationFail]
 {standard-fail-text}
@@ -195,7 +225,7 @@ Follow these steps to create a new Kafka topic.
 
 // end::task-creating-kafka-topic[]
 
-[time=10]
+[time=5]
 [id='creating-integration1']
 == Create the First Integration
 :task-context: creating-integration1
@@ -289,7 +319,7 @@ spec:
 
 // end::task-creating-integration1[]
 
-[time=10]
+[time=5]
 [id='creating-integration2']
 == Create the Second Integration
 :task-context: creating-integration2
@@ -321,33 +351,14 @@ spec:
   sources:
   - content: |
       // camel-k: language=java
-      /*
-       * Licensed to the Apache Software Foundation (ASF) under one or more
-       * contributor license agreements.  See the NOTICE file distributed with
-       * this work for additional information regarding copyright ownership.
-       * The ASF licenses this file to You under the Apache License, Version 2.0
-       * (the "License"); you may not use this file except in compliance with
-       * the License.  You may obtain a copy of the License at
-       *
-       *      http://www.apache.org/licenses/LICENSE-2.0
-       *
-       * Unless required by applicable law or agreed to in writing, software
-       * distributed under the License is distributed on an "AS IS" BASIS,
-       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-       * See the License for the specific language governing permissions and
-       * limitations under the License.
-       */
-
       import org.apache.camel.builder.RouteBuilder;
 
       public class PutToTopic extends RouteBuilder {
         @Override
         public void configure() throws Exception {
-
-            // Write your routes here, for example:
-            from("timer://foo?repeatCount=1")
+            from("timer://trigger?repeatCount=1")
               .setBody()
-                .simple("WHATEVER??")
+                .simple("Banana")
               .to("kafka:producer?brokers=my-cluster-kafka-bootstrap.kafka:9092");
         }
       }

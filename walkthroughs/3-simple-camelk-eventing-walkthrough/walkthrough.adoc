@@ -212,7 +212,63 @@ Follow these steps to create a new Camel K integration.
 .. Select `fruit-stand` as the project in the Project dropdown.
 .. Click on *Red Hat Integration - Camel K*. This will take you to the Operator hub where you can create Camel K artifacts.
 .. Find *Integration* and click *Create Instance*.
-.. Replace the YAML with this text: [tbd]
+.. Replace the YAML with this text:
++
+----
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  generation: 1
+  name: fruits-producer
+  selfLink: /apis/camel.apache.org/v1/namespaces/fruit-stand/integrations/fruits-producer
+spec:
+  dependencies:
+  - camel:http
+  sources:
+  - content: "import org.apache.camel.BindToRegistry;\nimport javax.net.ssl.HostnameVerifier;\nimport
+      javax.net.ssl.SSLSession;\nimport javax.net.ssl.X509TrustManager;\nimport java.security.cert.X509Certificate;\nimport
+      java.security.cert.CertificateException;\nimport org.apache.camel.support.jsse.SSLContextParameters;\nimport
+      org.apache.camel.support.jsse.TrustManagersParameters;\n\npublic class HTTPSCustomizer
+      {\n    @BindToRegistry(\"allowAllHostnameVerifier\")\n    public AllowAllHostnameVerifier
+      verifier(){\n        AllowAllHostnameVerifier allowAllHostnameVerifier = new
+      AllowAllHostnameVerifier();\n        System.out.println(\"allowAllHostnameVerifier:[\"+allowAllHostnameVerifier+\"]\");\n
+      \       return allowAllHostnameVerifier;\n    }\n\n    @BindToRegistry(\"mySSLContextParameters\")\n
+      \   public SSLContextParameters sslContext() throws Exception{\n        SSLContextParameters
+      sslContextParameters = new SSLContextParameters();\n        TrustManagersParameters
+      tmp = new TrustManagersParameters();\n        tmp.setTrustManager(new TrustALLManager());\n
+      \       sslContextParameters.setTrustManagers(tmp);\n        System.out.println(\"mySslContext:[\"+sslContextParameters+\"]\");\n\n
+      \       return sslContextParameters; \n        \n    }\n\n    class AllowAllHostnameVerifier
+      implements HostnameVerifier {\n        @Override\n        public boolean verify(String
+      s, SSLSession sslSession) {\n            return true;\n        }\n\n        \n
+      \   }\n    // Create a trust manager that does not validate certificate chains\n
+      \   class TrustALLManager implements X509TrustManager {\n        @Override\n
+      \       public void checkClientTrusted(X509Certificate[] chain, String authType)
+      throws CertificateException { }\n        @Override\n        public void checkServerTrusted(X509Certificate[]
+      chain, String authType) throws CertificateException { }\n        @Override\n
+      \       public X509Certificate[] getAcceptedIssuers() {\n            return
+      new X509Certificate[0];\n        }\n    }\n\n}"
+    name: HTTPSCustomizer.java
+  - content: |
+      // camel-k: language=java, dependency=camel-http
+      import org.apache.camel.builder.RouteBuilder;
+
+      public class FruitsProducer extends RouteBuilder {
+        @Override
+        public void configure() throws Exception {
+
+            // Write your routes here, for example:
+            from("kafka:producer?brokers=my-cluster-kafka-bootstrap.kafka:9092")
+              .setHeader("CamelHttpMethod", constant("GET"))
+              .to("http:fruityvice.com/api/fruit/all?bridgeEndpoint=true")
+              .split().jsonpath("$.[*]")
+              .marshal().json()
+              .log("${body}")
+              .to("kafka:fruits?brokers=my-cluster-kafka-bootstrap.kafka:9092");
+        }
+      }
+    name: FruitsProducer.java
+----
+
 .. Click *Create*.
 . Monitor the *Integrations* page until the new integration appears.
 
@@ -252,9 +308,54 @@ Follow these steps to create a second Camel K integration.
 .. Select `fruit-stand` as the project in the Project dropdown.
 .. Click on *Red Hat Integration - Camel K*. This will take you to the Operator hub where you can create Camel K artifacts.
 .. Find *Integration* and click *Create Instance*.
-.. Replace the YAML with this text: [tbd]
+.. Replace the YAML with this text:
++
+----
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  generation: 1
+  name: put-to-topic
+  selfLink: /apis/camel.apache.org/v1/namespaces/fruit-stand/integrations/put-to-topic
+spec:
+  sources:
+  - content: |
+      // camel-k: language=java
+      /*
+       * Licensed to the Apache Software Foundation (ASF) under one or more
+       * contributor license agreements.  See the NOTICE file distributed with
+       * this work for additional information regarding copyright ownership.
+       * The ASF licenses this file to You under the Apache License, Version 2.0
+       * (the "License"); you may not use this file except in compliance with
+       * the License.  You may obtain a copy of the License at
+       *
+       *      http://www.apache.org/licenses/LICENSE-2.0
+       *
+       * Unless required by applicable law or agreed to in writing, software
+       * distributed under the License is distributed on an "AS IS" BASIS,
+       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       * See the License for the specific language governing permissions and
+       * limitations under the License.
+       */
+
+      import org.apache.camel.builder.RouteBuilder;
+
+      public class PutToTopic extends RouteBuilder {
+        @Override
+        public void configure() throws Exception {
+
+            // Write your routes here, for example:
+            from("timer://foo?repeatCount=1")
+              .setBody()
+                .simple("WHATEVER??")
+              .to("kafka:producer?brokers=my-cluster-kafka-bootstrap.kafka:9092");
+        }
+      }
+    name: PutToTopic.java
+----
+
 .. Click *Create*.
-. Monitor the *Integrations* page until the new integration appears.
+.. Monitor the *Integrations* page until the new integration appears.
 
 When it does, go back to the log for the first integration `fruits-producer` and look for a number of json-based items to appear. 
 

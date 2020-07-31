@@ -15,21 +15,6 @@ We live in an era when business events are everywhere. Apache Camel K integratio
 
 In this Solution Pattern, you will be helping with a virtual fruit stand and creating a simple Camel K integration that pulls fruit from an online source of fruit-related nutritional information.
 
-== The Fruit Vendor
-
-The Fruit Vendor offers a stall in the market and a veritable wonderland of options for shoppers in need of produce. 
-
-The manager of the site has asked you to start to pull together information on their produce to help inform the buyer of nutritional details.
-
-image::images/photo-of-assorted-fruits-selling-on-fruit-stand-4117143.jpg[fruitstand, role="integr8ly-img-responsive"]
-// Photo by Kristina Gain from Pexels
-
-=== The Solution
-
-In this solution pattern, we will use the Fruityvice API service which is an Open API that provides nutritional data for all kinds of fruit. We can use this service to retrieve JSON-formatted data which will be used in the solution pattern. 
-
-We will use the fruit stand's Red Hat Integration (RHI) system which is already in place, create an event using Red Hat AMQ, and create a new Camel K route that performs the call to the Fruityvice API, processes the necessary JSON data, and adds a streamlined event to be used downstream. 
-
 // Resources included in the right-side of the Pattern -- format specified by SolX
 
 [type=walkthroughResource,serviceName=openshift]
@@ -51,6 +36,21 @@ We will use the fruit stand's Red Hat Integration (RHI) system which is already 
 ****
 * link:https://fruityvice.com/[Fruityvice webservice, window="_blank"]
 ****
+
+== The Fruit Vendor
+
+The Fruit Vendor offers a stall in the market and a veritable wonderland of options for shoppers in need of produce. 
+
+The manager of the site has asked you to start to pull together information on their produce to help inform the buyer of nutritional details.
+
+image::images/photo-of-assorted-fruits-selling-on-fruit-stand-4117143.jpg[fruitstand, role="integr8ly-img-responsive"]
+// Photo by Kristina Gain from Pexels
+
+=== The Solution
+
+In this solution pattern, we will use the Fruityvice API service which is an Open API that provides nutritional data for all kinds of fruit. We can use this service to retrieve JSON-formatted data which will be used in the solution pattern. 
+
+We will use the fruit stand's Red Hat Integration (RHI) system which is already in place, create an event using Red Hat AMQ, and create a new Camel K route that performs the call to the Fruityvice API, processes the necessary JSON data, and adds a streamlined event to be used downstream. 
 
 :sectnums:
 

@@ -185,7 +185,7 @@ Follow these steps to create a new Kafka instance.
 
 . Go to the link:{openshift-add-kafka-url}[OpenShift Console->+Add->From Catalog (Filter by keyword = kafka), window="_blank"].
 . Make sure `fruit-stand` is selected as the project in the Project dropdown.
-. Locate *Kafka* and click *Create Instance*, or click on the `Kafka` link in the list of Kafka tabs and then click *Create Kafka*.
+. Locate and click *Kafka*, then click *Create*.
 . Click *Edit Form* to peruse the options, but leave all settings to their defaults.
 . Click *Create*.
 
@@ -217,7 +217,7 @@ Follow these steps to create a new Kafka topic.
 
 . Go to the link:{openshift-add-kafka-url}[OpenShift Console->+Add->From Catalog (Filter by keyword = kafka), window="_blank"].
 . Make sure `fruit-stand` is selected as the project in the Project dropdown.
-. Locate *Kafka Topic* and click *Create Instance*.
+. Locate and click *Kafka Topic*, then click *Create*.
 . Click *Edit Form* to peruse the options in a user-friendly format.
 . Change the Name from `my-topic` to `fruits`. 
 . Click *Create*.
@@ -245,7 +245,7 @@ Follow these steps to create a new Camel K integration.
 
 . Go to the link:{openshift-add-integration-url}[OpenShift Console->+Add->From Catalog (Filter by keyword = integration), window="_blank"].
 . Make sure `fruit-stand` is selected as the project in the Project dropdown.
-. Locate *Integration* and click *Create Instance*.
+. Locate and click *Integration*, then click *Create*.
 . Replace the YAML with this text (expand, select, copy and paste):
 +
 [source,yaml]
@@ -310,7 +310,7 @@ spec:
 [type=verification]
 . Go to the link:{openshift-topology-url}[Developer->Topology, window="_blank"].
 . Make sure `fruit-stand` is selected as the project in the Project dropdown.
-. Verify that `fruits-producer` appears in the `red-hat-camel-k-operator` group. It may take a few moments to appear, as the operator is building the integration-kit before it spins up the integration itself.
+. Verify that `fruits-producer` appears in the `red-hat-camel-k-operator` group. It may take a few moments to appear, as the operator is building the integration kit before it spins up the integration itself.
 . Click on *fruits-producer* to view its resource list and select `Resources` in the list of tabs.
 . Find the `Pod` associated with this integration. It should be in the format `fruits-producer-<uniqueID>` where `uniqueID` is a combination of characters giving the integration pod a unique name in the system.
 . Click `View Logs` and explore the log stream for the running integration.

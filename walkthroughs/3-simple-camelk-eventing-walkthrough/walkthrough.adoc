@@ -47,12 +47,6 @@ In this Solution Pattern, you will be helping with a virtual fruit stand and cre
 * link:https://camel.apache.org/camel-k/latest/index.html[Apache Camel K Documentation, window="_blank"]
 ****
 
-[type=walkthroughResource]
-.Fruityvice webservice
-****
-* link:https://fruityvice.com/[Fruityvice webservice, window="_blank"]
-****
-
 == The Fruit Vendor
 
 image::images/photo-of-assorted-fruits-selling-on-fruit-stand-4117143.jpg[fruitstand, float="right", title="Photo by Kristina Gain from Pexels"]

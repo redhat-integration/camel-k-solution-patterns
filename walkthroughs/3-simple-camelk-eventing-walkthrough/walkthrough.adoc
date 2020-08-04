@@ -126,10 +126,8 @@ If you have logged in as a developer, follow these steps to create a new eventin
 
 [type=verification]
 
-If you have logged in as a cluster administrator:
-* Go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] in the console. Do you see your newly created project displayed in the *Projects* list?
-If you have logged in as a developer:
-* Go to link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"] in the console. Do you see your newly created project displayed in the *Project* drop-down list?
+* If you have logged in as a cluster administrator, go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] in the console. Do you see your newly created project displayed in the *Projects* list?
+* If you have logged in as a developer, go to link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"] in the console. Do you see your newly created project displayed in the *Project* drop-down list?
 
 [type=verificationFail]
 {standard-fail-text}

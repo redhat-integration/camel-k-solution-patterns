@@ -110,8 +110,6 @@ This demonstration requires a single project with event streaming and camel k re
 
 If you have logged in as a cluster administrator, follow these steps to create a new eventing project:
 
-In the link:{openshift-console-url}[OpenShift Console, window="_blank"], create a new OpenShift project:
-
 . Click on *Projects* (link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"])
 . Click *Create Project*.
 . Enter a project named `fruit-stand` and click *Create*.

@@ -1,0 +1,52 @@
+apiVersion: camel.apache.org/v1
+kind: Integration
+metadata:
+  generation: 1
+  name: fruits-producer
+  selfLink: /apis/camel.apache.org/v1/namespaces/fruit-stand/integrations/fruits-producer
+spec:
+  dependencies:
+  - camel:http
+  sources:
+  - content: "import org.apache.camel.BindToRegistry;\nimport javax.net.ssl.HostnameVerifier;\nimport
+      javax.net.ssl.SSLSession;\nimport javax.net.ssl.X509TrustManager;\nimport java.security.cert.X509Certificate;\nimport
+      java.security.cert.CertificateException;\nimport org.apache.camel.support.jsse.SSLContextParameters;\nimport
+      org.apache.camel.support.jsse.TrustManagersParameters;\n\npublic class HTTPSCustomizer
+      {\n    @BindToRegistry(\"allowAllHostnameVerifier\")\n    public AllowAllHostnameVerifier
+      verifier(){\n        AllowAllHostnameVerifier allowAllHostnameVerifier = new
+      AllowAllHostnameVerifier();\n        System.out.println(\"allowAllHostnameVerifier:[\"+allowAllHostnameVerifier+\"]\");\n
+      \       return allowAllHostnameVerifier;\n    }\n\n    @BindToRegistry(\"mySSLContextParameters\")\n
+      \   public SSLContextParameters sslContext() throws Exception{\n        SSLContextParameters
+      sslContextParameters = new SSLContextParameters();\n        TrustManagersParameters
+      tmp = new TrustManagersParameters();\n        tmp.setTrustManager(new TrustALLManager());\n
+      \       sslContextParameters.setTrustManagers(tmp);\n        System.out.println(\"mySslContext:[\"+sslContextParameters+\"]\");\n\n
+      \       return sslContextParameters; \n        \n    }\n\n    class AllowAllHostnameVerifier
+      implements HostnameVerifier {\n        @Override\n        public boolean verify(String
+      s, SSLSession sslSession) {\n            return true;\n        }\n\n        \n
+      \   }\n    // Create a trust manager that does not validate certificate chains\n
+      \   class TrustALLManager implements X509TrustManager {\n        @Override\n
+      \       public void checkClientTrusted(X509Certificate[] chain, String authType)
+      throws CertificateException { }\n        @Override\n        public void checkServerTrusted(X509Certificate[]
+      chain, String authType) throws CertificateException { }\n        @Override\n
+      \       public X509Certificate[] getAcceptedIssuers() {\n            return
+      new X509Certificate[0];\n        }\n    }\n\n}"
+    name: HTTPSCustomizer.java
+  - content: |
+      // camel-k: language=java, dependency=camel-http
+      import org.apache.camel.builder.RouteBuilder;
+
+      public class FruitsProducer extends RouteBuilder {
+        @Override
+        public void configure() throws Exception {
+
+            // Write your routes here, for example:
+            from("kafka:producer?brokers=my-cluster-kafka-bootstrap.kafka:9092")
+              .setHeader("CamelHttpMethod", constant("GET"))
+              .to("http:fruityvice.com/api/fruit/all?bridgeEndpoint=true")
+              .split().jsonpath("$.[*]")
+              .marshal().json()
+              .log("${body}")
+              .to("kafka:fruits?brokers=my-cluster-kafka-bootstrap.kafka:9092");
+        }
+      }
+    name: FruitsProducer.java

@@ -4,7 +4,12 @@
 :openshift-topology-url: {openshift-host}/topology
 :openshift-projects-url: {openshift-host}/k8s/cluster/projects
 :openshift-installed-operators-url: {openshift-host}/k8s/ns/fruit-stand/operators.coreos.com~v1alpha1~ClusterServiceVersion
-:openshift-add-url: {openshift-host}/add:fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
+:openshift-add-url: {openshift-host}/add
+:openshift-add-kafka-url : {openshift-host}/catalog?keyword=kafka
+:openshift-add-integration-url : {openshift-host}/catalog?keyword=integration
+:openshift-search-kafka-topic-url : {openshift-host}/search?kind=kafka.strimzi.io~v1beta1~KafkaTopic
+:openshift-search-integration-url : {openshift-host}/search?kind=camel.apache.org~v1~Integration
+:fuse-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_fuse/{fuse-version}/
 :amq-documentation-url: https://access.redhat.com/documentation/en-us/red_hat_amq/{amq-version}/
 
 //attributes
@@ -67,7 +72,7 @@ The manager of the site has asked you to start to pull together information on t
 
 In this solution pattern, we will use the Fruityvice API service which is an Open API that provides nutritional data for all kinds of fruit. We can use this service to retrieve JSON-formatted data which will be used in the solution pattern. 
 
-Fruityvice enables you to use a GET call and retrieve JSON around common fruits. For example, a GET about data for `Banana` returns:
+Fruityvice enables you to use a GET call and retrieve JSON around common fruits. For example, a GET about data for `Banana` (link:https://fruityvice.com/api/fruit/banana[https://fruityvice.com/api/fruit/banana, window="_blank]) returns:
 
 ....
 {
@@ -89,6 +94,12 @@ Fruityvice enables you to use a GET call and retrieve JSON around common fruits.
 {bl}
 We will use the fruit stand's Red Hat Integration (RHI) system which is already in place, create an event using Red Hat AMQ, and create a new Camel K route that performs the call to the Fruityvice API, processes the necessary JSON data, and adds a streamlined event to be used downstream. 
 
+[type=taskResource]
+.Useful links
+****
+* link:https://fruityvice.com/[Fruityvice webservice, window="_blank"]
+****
+
 :sectnums:
 
 [time=5]
@@ -101,17 +112,29 @@ This demonstration requires a single project with event streaming and camel k re
 ****
 *Creating new projects in OpenShift*
 ****
-Follow these steps to create a new eventing project:
 
-. In the link:{openshift-console-url}[OpenShift Console, window="_blank"], log in using an account with cluster administrator privileges.
+If you have logged in as a cluster administrator, follow these steps to create a new eventing project:
+
+In the link:{openshift-console-url}[OpenShift Console, window="_blank"]
+
 . Create a new OpenShift project:
 .. Click on *Projects* (link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"])
 .. Click *Create Project*.
 .. Enter a project named `fruit-stand` and click *Create*.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
+If you have logged in as a developer, follow these steps to create a new eventing project:
+
+In the link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"]
+
+. Create a new OpenShift project:
+.. Select the *Project* drop-down at the top and click *Create Project*.
+.. Enter a project named `fruit-stand` and click *Create*.
+
 [type=verification]
-Go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] in the console. Do you see your newly created project displayed in the *Projects* list?
+
+* If you have logged in as a cluster administrator, go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] in the console. Do you see your newly created project displayed in the *Projects* list?
+* If you have logged in as a developer, go to link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"] in the console. Do you see your newly created project displayed in the *Project* drop-down list?
 
 [type=verificationFail]
 {standard-fail-text}
@@ -123,6 +146,8 @@ Go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"
 == Installing Operators
 :task-context: installing-operators
 
+NOTE: Normally this step would be done ahead of the time by the cluster administrator and requires administrator access.
+
 With the projects created, we can now install each of the following operators which we will need for each namespace:
 
 * Red Hat Integration - Camel K Operator
@@ -133,10 +158,10 @@ With the projects created, we can now install each of the following operators wh
 //* link:{https://catalog.redhat.com/software/operators/detail/5ef20efd46bc301a95a1e9a4}[Red Hat Integration - AMQ Streams Operator, window="_blank"]
 
 {bl}
-Follow these steps to install the Camel K operator (cluster admin rights are necessary).
+Follow these steps to install the Camel K operator.
 
 . Go to *Operators->OperatorHub* in the link:{openshift-host}/operatorHub[OpenShift Console, window="_blank"].
-. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+. Make sure `fruit-stand` is selected as the project in the *Project* dropdown.
 . In the *Filter by keyword* text box, enter `Camel K` to find the *Red Hat Integration - Camel K Operator*.
 . Read the information about the Operator, and click *Install*. This displays the *Create Operator Subscription* page.
 . Select the following subscription setting:
@@ -160,7 +185,7 @@ Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators-
 == Create a Kafka Instance
 :task-context: creating-kafka-instance
 
-With the projects created and operators installed, we start setting up our event flow. We need to create a Kafka instance to get us started.
+With the projects created and operators installed, we can start setting up our event flow. We need to create a Kafka instance to get us started.
 
 ****
 *Creating a Kafka Instance*
@@ -168,20 +193,18 @@ With the projects created and operators installed, we start setting up our event
 
 Follow these steps to create a new Kafka instance.
 
-. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+. Go to the link:{openshift-add-kafka-url}[OpenShift Console->+Add->From Catalog (Filter by keyword = kafka), window="_blank"].
 .. Make sure `fruit-stand` is selected as the project in the Project dropdown.
-.. Click on *Red Hat Integration - AMQ Streams*. This will take you to the Operator page where you can create Kafka artifacts.
-.. In the *Provided APIs* on the *Details* page, locate *Kafka* and click *Create Instance*, or click on the `Kafka` link in the list of Kafka tabs and then click *Create Kafka*.
+.. Locate *Kafka* and click *Create Instance*, or click on the `Kafka` link in the list of Kafka tabs and then click *Create Kafka*.
 .. Click *Edit Form* to peruse the options, but leave all settings to their defaults.
 .. Click *Create*.
-. Monitor the *Kafkas* page until the new Kafka instance appears.
+
+Monitor the link:{openshift-topology-url}[Developer->Topology, window="_blank"] page until the new Kafka cluster appears.
 
 [type=verification]
-. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+. Go to the link:{openshift-topology-url}[Developer->Topology, window="_blank"].
 .. Make sure `fruit-stand` is selected as the project in the Project dropdown.
-.. Click on `Red Hat Integration - AMQ Streams`. It will take you to the Operator hub where you can create Kafka artifacts.
-.. Click on the `Kafka` link in the list of Kafka tabs.
-.. Verify that `my-cluster` appears in the list of Kafka instances.
+.. Verify that `my-cluster-kafka` and `my-cluster-zookeeper` appear in the `amqstreams` group.
 
 [type=verificationFail]
 {standard-fail-text}
@@ -193,7 +216,7 @@ Follow these steps to create a new Kafka instance.
 == Create a Kafka Topic
 :task-context: creating-kafka-topic
 
-With the projects created and operators installed, we start setting up our event flow. In the Streaming namespace, we will have a topic listening to events (weather).
+Next we will set up a Kafka topic listening to events (fruits).
 
 ****
 *Creating a Kafka Topic*
@@ -201,20 +224,16 @@ With the projects created and operators installed, we start setting up our event
 
 Follow these steps to create a new Kafka topic.
 
-. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+. Go to the link:{openshift-add-kafka-url}[OpenShift Console->+Add->From Catalog (Filter by keyword = kafka), window="_blank"].
 .. Make sure `fruit-stand` is selected as the project in the Project dropdown.
-.. Click on *Red Hat Integration - AMQ Streams*. This will take you to the Operator page where you can create Kafka artifacts.
-.. Find *Kafka Topic* and click *Create Instance*.
+.. Locate *Kafka Topic* and click *Create Instance*.
 .. Click *Edit Form* to peruse the options in a user-friendly format.
 .. Change the Name from `my-topic` to `fruits`. 
 .. Click *Create*.
-. Monitor the *KafkaTopics* page until the new topic appears.
 
 [type=verification]
-. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+. Go to the link:{openshift-search-kafka-topic-url }[Developer->More->Search (Resources filter = KafkaTopic), window="_blank"].
 .. Make sure `fruit-stand` is selected as the project in the Project dropdown.
-.. Click on `Red Hat Integration - AMQ Streams`.
-.. Click on the `Kafka Topic` link in the list of Kafka tabs.
 .. Verify that `fruits` appears in the list of Kafka Topics.
 
 [type=verificationFail]
@@ -233,12 +252,12 @@ Follow these steps to create a new Kafka topic.
 
 Follow these steps to create a new Camel K integration.
 
-. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+. Go to the link:{openshift-add-integration-url }[OpenShift Console->+Add->From Catalog (Filter by keyword = integration), window="_blank"].
 .. Make sure `fruit-stand` is selected as the project in the Project dropdown.
-.. Click on *Red Hat Integration - Camel K*. This will take you to the Operator page where you can create Camel K artifacts.
-.. Find *Integration* and click *Create Instance*.
+.. Locate *Integration* and click *Create Instance*.
 .. Replace the YAML with this text (expand, select, copy and paste):
 +
+[source,yaml]
 ----
 apiVersion: camel.apache.org/v1
 kind: Integration
@@ -292,21 +311,18 @@ spec:
         }
       }
     name: FruitsProducer.java
+
 ----
 
 .. Click *Create*.
-. Monitor the *Integrations* page until the new integration appears.
 
 [type=verification]
-. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+. Go to the link:{openshift-topology-url}[Developer->Topology, window="_blank"].
 .. Make sure `fruit-stand` is selected as the project in the Project dropdown.
-.. Click on *Red Hat Integration - Camel K*.
-.. Click on the `Integration` link in the list of Camel K tabs.
-.. Verify that `fruits-producer` appears in the list of Integrations.
-.. Verify that `fruits-producer` is in the state `Phase: Running`. 
+.. Verify that `fruits-producer` appears in the `red-hat-camel-k-operator` group. It may take a few moments to appear, as the operator is building the integration-kit before it spins up the integration itself.
 .. Click on *fruits-producer* to view its resource list and select `Resources` in the list of tabs.
 .. Find the `Pod` associated with this integration. It should be in the format `fruits-producer-<uniqueID>` where `uniqueID` is a combination of characters giving the integration pod a unique name in the system.
-.. CLick on the `Logs` link in the list of Pod Details tabs and explore the tab stream for the running integration.
+.. Click `View Logs` and explore the log stream for the running integration.
 
 [type=verificationFail]
 {standard-fail-text}
@@ -326,12 +342,12 @@ Now that our first integration is out there listening for events, let's give it 
 
 Follow these steps to create a second Camel K integration.
 
-. Go to the link:{openshift-installed-operators-url}[OpenShift Console->Operators->Installed Operators, window="_blank"].
+. Go to the link:{openshift-add-integration-url }[OpenShift Console->+Add->From Catalog (Filter by keyword = integration), window="_blank"].
 .. Make sure `fruit-stand` is selected as the project in the Project dropdown.
-.. Click on *Red Hat Integration - Camel K*. This will take you to the Operator hub where you can create Camel K artifacts.
-.. Find *Integration* and click *Create Instance*.
+.. Locate *Integration* and click *Create Instance*.
 .. Replace the YAML with this text (expand, select, copy and paste):
 +
+[source,yaml]
 ----
 apiVersion: camel.apache.org/v1
 kind: Integration
@@ -355,20 +371,20 @@ spec:
         }
       }
     name: PutToTopic.java
+
 ----
 
 .. Click *Create*.
-.. Monitor the *Integrations* page until the new integration appears.
 
 When it does, go back to the log for the first integration `fruits-producer` and look for a number of json-based items to appear. 
 
 [type=verification]
-. Go to the link:{openshift-console-url}[OpenShift Console, window="_blank"].
-. Go to *Operators* -> *Installed Operators*.
-.. Select `fruit-stand` as the project in the Project dropdown at the top.
-.. Click on *Red Hat Integration - Camel K*. This will take you to the Operator hub where you can create Camel K artifacts.
-.. Click on the `Integration` link in the list of Camel K tabs.
-.. Verify that `put-to-topic` appears in the list of Integrations.
+. Go to the link:{openshift-topology-url}[Developer->Topology, window="_blank"].
+.. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+.. Verify that `put-to-topic` appears in the `red-hat-camel-k-operator` group. It may take a few moments to appear, as the operator is building the integration-kit before it spins up the integration itself.
+.. Click on *put-to-topic* to view its resource list and select `Resources` in the list of tabs.
+.. Find the `Pod` associated with this integration. It should be in the format `put-to-topic-<uniqueID>` where `uniqueID` is a combination of characters giving the integration pod a unique name in the system.
+.. Click `View Logs` and explore the log stream for the running integration.
 
 [type=verificationFail]
 {standard-fail-text}

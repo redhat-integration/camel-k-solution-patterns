@@ -66,7 +66,7 @@ The manager of the site has asked you to start to pull together information on t
 
 In this solution pattern, we will use the Fruityvice API service which is an Open API that provides nutritional data for all kinds of fruit. We can use this service to retrieve JSON-formatted data which will be used in the solution pattern. 
 
-Fruityvice enables you to use a GET call and retrieve JSON around common fruits. For example, a GET about data for `Banana` (link:https://fruityvice.com/api/fruit/banana[GET api/fruit/banana, window="_blank]) returns:
+Fruityvice enables you to use a GET call and retrieve JSON around common fruits. For example, a GET about data for `Banana` (link:https://fruityvice.com/api/fruit/banana[GET api/fruit/banana, window="_blank"]) returns:
 
 ....
 {

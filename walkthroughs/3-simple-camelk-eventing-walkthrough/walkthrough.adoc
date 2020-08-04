@@ -120,7 +120,7 @@ In the link:{openshift-console-url}[OpenShift Console, window="_blank"], create 
 {bl}
 If you have logged in as a developer, follow these steps to create a new eventing project:
 
-. Click on *+Add* (link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"].
+. Click on *+Add* (link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"]).
 . Select the *Project* drop-down at the top and click *Create Project*.
 . Enter a project named `fruit-stand` and click *Create*.
 
@@ -245,7 +245,7 @@ Follow these steps to create a new Kafka topic.
 
 Follow these steps to create a new Camel K integration.
 
-. Go to the link:{openshift-add-integration-url }[OpenShift Console->+Add->From Catalog (Filter by keyword = integration), window="_blank"].
+. Go to the link:{openshift-add-integration-url}[OpenShift Console->+Add->From Catalog (Filter by keyword = integration), window="_blank"].
 . Make sure `fruit-stand` is selected as the project in the Project dropdown.
 . Locate *Integration* and click *Create Instance*.
 . Replace the YAML with this text (expand, select, copy and paste):
@@ -335,7 +335,7 @@ Now that our first integration is out there listening for events, let's give it 
 
 Follow these steps to create a second Camel K integration.
 
-. Go to the link:{openshift-add-integration-url }[OpenShift Console->+Add->From Catalog (Filter by keyword = integration), window="_blank"].
+. Go to the link:{openshift-add-integration-url}[OpenShift Console->+Add->From Catalog (Filter by keyword = integration), window="_blank"].
 . Make sure `fruit-stand` is selected as the project in the Project dropdown.
 . Locate *Integration* and click *Create Instance*.
 . Replace the YAML with this text (expand, select, copy and paste):

@@ -68,6 +68,7 @@ In this solution pattern, we will use the Fruityvice API service which is an Ope
 
 Fruityvice enables you to use a GET call and retrieve JSON around common fruits. For example, a GET about data for `Banana` (link:https://fruityvice.com/api/fruit/banana[GET api/fruit/banana, window="_blank"]) returns:
 
+[source,json]
 ....
 {
     "genus": "Musa",
@@ -109,27 +110,30 @@ This demonstration requires a single project with event streaming and camel k re
 
 If you have logged in as a cluster administrator, follow these steps to create a new eventing project:
 
-In the link:{openshift-console-url}[OpenShift Console, window="_blank"]
+In the link:{openshift-console-url}[OpenShift Console, window="_blank"], create a new OpenShift project:
 
-. Create a new OpenShift project:
-.. Click on *Projects* (link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"])
-.. Click *Create Project*.
-.. Enter a project named `fruit-stand` and click *Create*.
+. Click on *Projects* (link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"])
+. Click *Create Project*.
+. Enter a project named `fruit-stand` and click *Create*.
 . Monitor the OpenShift Console until a green check mark is displayed next to the new project.
 
 {bl}
 If you have logged in as a developer, follow these steps to create a new eventing project:
 
-In the link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"]
+In the link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"], create a new OpenShift project:
 
-. Create a new OpenShift project:
-.. Select the *Project* drop-down at the top and click *Create Project*.
-.. Enter a project named `fruit-stand` and click *Create*.
+. Select the *Project* drop-down at the top and click *Create Project*.
+. Enter a project named `fruit-stand` and click *Create*.
 
 [type=verification]
 
-* If you have logged in as a cluster administrator, go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] in the console. Do you see your newly created project displayed in the *Projects* list?
-* If you have logged in as a developer, go to link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"] in the console. Do you see your newly created project displayed in the *Project* drop-down list?
+If you have logged in as a cluster administrator:
+
+* Go to link:{openshift-projects-url}[OpenShift Console->Projects, window="_blank"] in the console. Do you see your newly created project displayed in the *Projects* list?
+
+If you have logged in as a developer:
+
+* Go to link:{openshift-add-url}[OpenShift Console->Developer->+Add, window="_blank"] in the console. Do you see your newly created project displayed in the *Project* drop-down list?
 
 [type=verificationFail]
 {standard-fail-text}

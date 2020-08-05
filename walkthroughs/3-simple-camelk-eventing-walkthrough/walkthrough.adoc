@@ -309,7 +309,7 @@ spec:
 .. Verify that `fruits-producer` is in the state `Phase: Running`. 
 .. Click *fruits-producer* to view its resource list and select `Resources` in the list of tabs.
 .. Find the `Pod` associated with this integration. It should be in the format `fruits-producer-<uniqueID>` where `uniqueID` is a combination of characters giving the integration pod a unique name in the system.
-.. CLick on the `Logs` link in the list of Pod Details tabs and explore the tab stream for the running integration.
+.. Click on the `Logs` link in the list of Pod Details tabs and explore the tab stream for the running integration.
 
 [type=verificationFail]
 {standard-fail-text}

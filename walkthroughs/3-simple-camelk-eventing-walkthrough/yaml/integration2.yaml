@@ -13,10 +13,12 @@ spec:
       public class PutToTopic extends RouteBuilder {
         @Override
         public void configure() throws Exception {
-            from("timer://trigger?repeatCount=1")
+
+            // Write your routes here, for example:
+            from("timer://foo?repeatCount=1")
               .setBody()
-                .simple("Banana")
-              .to("kafka:producer?brokers=my-cluster-kafka-bootstrap.kafka:9092");
+                .simple("WHATEVER??")
+              .to("kafka:producer?brokers=my-cluster-kafka-bootstrap:9092");
         }
       }
     name: PutToTopic.java

@@ -42,7 +42,7 @@ spec:
             // Write your routes here, for example:
             from("kafka:producer?brokers=my-cluster-kafka-bootstrap:9092")
               .setHeader("CamelHttpMethod", constant("GET"))
-              .to("http:fruityvice.com/api/fruit/all?bridgeEndpoint=true")
+              .toD("http:fruityvice.com/api/fruit/${body}?bridgeEndpoint=true")
               .split().jsonpath("$.[*]")
               .marshal().json()
               .log("${body}")

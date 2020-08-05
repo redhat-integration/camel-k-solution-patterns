@@ -294,13 +294,13 @@ spec:
         public void configure() throws Exception {
 
             // Write your routes here, for example:
-            from("kafka:producer?brokers=my-cluster-kafka-bootstrap.kafka:9092")
+            from("kafka:producer?brokers=my-cluster-kafka-bootstrap:9092")
               .setHeader("CamelHttpMethod", constant("GET"))
-              .to("http:fruityvice.com/api/fruit/all?bridgeEndpoint=true")
+              .toD("http:fruityvice.com/api/fruit/${body}?bridgeEndpoint=true")
               .split().jsonpath("$.[*]")
               .marshal().json()
               .log("${body}")
-              .to("kafka:fruits?brokers=my-cluster-kafka-bootstrap.kafka:9092");
+              .to("kafka:fruits?brokers=my-cluster-kafka-bootstrap:9092");
         }
       }
     name: FruitsProducer.java
@@ -357,9 +357,10 @@ spec:
       public class PutToTopic extends RouteBuilder {
         @Override
         public void configure() throws Exception {
-            from("timer://trigger?repeatCount=1")
+            // try things like all, Banana, Orange, Tomato
+            from("timer://foo?repeatCount=1")
               .setBody()
-                .simple("Fruits")
+                .simple("all")
               .to("kafka:producer?brokers=my-cluster-kafka-bootstrap:9092");
         }
       }
@@ -386,3 +387,27 @@ When this new integration appears, go back to the log for the first integration 
 {standard-fail-text}
 
 // end::task-creating-integration2[]
+
+[time=5]
+[id='modifying-integration2']
+== Updating the Second Integration
+:task-context: modifying-integration2
+
+****
+*Modifying the second Camel K Integration*
+****
+
+Now that we've seen our two integrations work together to give us a list of fruit information from the web service, let's change the route slightly to narrow the focus to a single type of fruit.
+
+Follow these steps to update the second Camel K integration.
+
+. Go to the link:{openshift-search-integration-url}[Developer > More > Search (Resources filter = Integration), window="_blank"].
+. Make sure `fruit-stand` is selected as the project in the Project dropdown.
+. Verify that `put-to-topic` appears in the list of integrations and click the vertical `...` to the far right.
+. Click `Edit Integration`.
+. Modify the body of the route, using `Banana`, `Orange`, or `Tomato` in place of `all`.
+. Click `Save`. 
+
+Then go back to the log for the first integration `fruits-producer` and look for a different result in the log. 
+
+// end::task-modifying-integration2[]

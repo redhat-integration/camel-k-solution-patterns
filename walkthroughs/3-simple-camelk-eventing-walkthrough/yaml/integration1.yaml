@@ -1,9 +1,8 @@
 apiVersion: camel.apache.org/v1
 kind: Integration
 metadata:
-  generation: 1
   name: fruits-producer
-  selfLink: /apis/camel.apache.org/v1/namespaces/fruit-stand/integrations/fruits-producer
+  namespace: redhat-rhmi-camel-k
 spec:
   dependencies:
   - camel:http
@@ -38,15 +37,13 @@ spec:
       public class FruitsProducer extends RouteBuilder {
         @Override
         public void configure() throws Exception {
-
-            // Write your routes here, for example:
-            from("kafka:producer?brokers=my-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092")
+            from("kafka:producer?brokers=rhmi-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092")
               .setHeader("CamelHttpMethod", constant("GET"))
               .toD("http:fruityvice.com/api/fruit/${body}?bridgeEndpoint=true")
               .split().jsonpath("$.[*]")
               .marshal().json()
               .log("${body}")
-              .to("kafka:fruits?brokers=my-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
+              .to("kafka:fruits?brokers=rhmi-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
         }
       }
     name: FruitsProducer.java

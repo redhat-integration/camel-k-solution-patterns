@@ -1,9 +1,8 @@
 apiVersion: camel.apache.org/v1
 kind: Integration
 metadata:
-  generation: 1
   name: put-to-topic
-  selfLink: /apis/camel.apache.org/v1/namespaces/fruit-stand/integrations/put-to-topic
+  namespace: redhat-rhmi-camel-k
 spec:
   sources:
   - content: |
@@ -17,7 +16,7 @@ spec:
             from("timer://foo?repeatCount=1")
               .setBody()
                 .simple("all")
-              .to("kafka:producer?brokers=my-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
+              .to("kafka:producer?brokers=rhmi-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
         }
       }
     name: PutToTopic.java

@@ -188,9 +188,8 @@ Follow these steps to create a new Camel K integration.
 apiVersion: camel.apache.org/v1
 kind: Integration
 metadata:
-  generation: 1
   name: fruits-producer
-  selfLink: /apis/camel.apache.org/v1/namespaces/redhat-rhmi-camel-k/integrations/fruits-producer
+  namespace: redhat-rhmi-camel-k
 spec:
   dependencies:
   - camel:http
@@ -231,7 +230,7 @@ spec:
               .split().jsonpath("$.[*]")
               .marshal().json()
               .log("${body}")
-              .to("kafka:fruits?brokers=my-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
+              .to("kafka:fruits?brokers=rhmi-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
         }
       }
     name: FruitsProducer.java
@@ -276,9 +275,8 @@ Follow these steps to create a second Camel K integration.
 apiVersion: camel.apache.org/v1
 kind: Integration
 metadata:
-  generation: 1
   name: put-to-topic
-  selfLink: /apis/camel.apache.org/v1/namespaces/redhat-rhmi-camel-k/integrations/put-to-topic
+  namespace: redhat-rhmi-camel-k
 spec:
   sources:
   - content: |
@@ -292,7 +290,7 @@ spec:
             from("timer://foo?repeatCount=1")
               .setBody()
                 .simple("all")
-              .to("kafka:producer?brokers=my-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
+              .to("kafka:producer?brokers=rhmi-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
         }
       }
     name: PutToTopic.java

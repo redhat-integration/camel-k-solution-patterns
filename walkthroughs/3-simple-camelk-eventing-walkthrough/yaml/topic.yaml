@@ -3,4 +3,6 @@ kind: KafkaTopic
 metadata:
   name: fruits
   namespace: redhat-rhmi-amq-streams
-spec: {}
+spec:
+  partitions: 1
+  replicas: 1

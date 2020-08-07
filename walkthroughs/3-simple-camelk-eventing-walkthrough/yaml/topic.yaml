@@ -1,0 +1,6 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: fruits
+  namespace: redhat-rhmi-amq-streams
+spec: {}

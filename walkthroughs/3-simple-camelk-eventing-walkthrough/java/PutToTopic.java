@@ -8,6 +8,6 @@ public class PutToTopic extends RouteBuilder {
       from("timer://foo?repeatCount=1")
         .setBody()
           .simple("all")
-        .to("kafka:producer?brokers=my-cluster-kafka-bootstrap:9092");
+        .to("kafka:producer?brokers=my-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
   }
 }

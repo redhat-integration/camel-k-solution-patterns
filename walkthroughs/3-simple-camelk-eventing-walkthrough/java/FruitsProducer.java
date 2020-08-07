@@ -4,13 +4,12 @@ import org.apache.camel.builder.RouteBuilder;
 public class FruitsProducer extends RouteBuilder {
     @Override
     public void configure() throws Exception {
-            // Write your routes here, for example:
-            from("kafka:producer?brokers=my-cluster-kafka-bootstrap:9092")
+            from("kafka:producer?brokers=rhmi-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092")
                 .setHeader("CamelHttpMethod", constant("GET"))
                 .toD("http:fruityvice.com/api/fruit/${body}?bridgeEndpoint=true")
                 .split().jsonpath("$.[*]")
                 .marshal().json()
                 .log("${body}")
-                .to("kafka:fruits?brokers=my-cluster-kafka-bootstrap:9092");
+                .to("kafka:fruits?brokers=rhmi-cluster-kafka-bootstrap.redhat-rhmi-amq-streams:9092");
     }
 }

@@ -98,7 +98,7 @@ We will use The Fruit Vendor's Red Hat Integration (RHI) system which is already
 :sectnums:
 
 [time=5]
-[id='creating-a-project']
+[id='getting-started']
 == Getting Started
 :task-context: getting-started
 
@@ -107,6 +107,7 @@ This demonstration assumes that the RHI Operator has been installed previously, 
 * redhat-rhmi-amq-streams (with the AMQ Streams operator pre-installed)
 * redhat-rhmi-camel-k (with the Camel K perator pre-installed)
 
+{bl}
 In the following steps, we will set up a new Kafka Topic (fruits) and two Camel K integrations (fruits-producer and put-to-topic). The first integration provides our connection to the FruityVice API and will conduct an http GET for the nutritional information we're looking for, based on an input provided by our second integration. When the fruit information is retrieved, it will be put on the Kafka Topic `fruits`.
 
 Make sure you are in `Developer` role in the {openshift-console-url}[OpenShift Console, window="_blank"].
@@ -337,6 +338,7 @@ Follow these steps to update the second Camel K integration.
 . Modify the body of the route, using `Banana`, `Orange`, or `Tomato` in place of `all`.
 . Click `Save`. 
 
+{bl}
 Then go back to the log for the first integration `fruits-producer` and look for a different result in the log. 
 
 // end::task-modifying-integration2[]
